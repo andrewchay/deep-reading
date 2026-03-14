@@ -11,28 +11,52 @@ Transform any book or technical material into a high-value cognitive asset throu
 
 This skill automatically detects the language used in your request and generates reports in the same language.
 
-**Supported languages:**
-- 🇨🇳 中文 (Chinese) - Simplified & Traditional
-- 🇬🇧 English
-- 🇯🇵 日本語 (Japanese)
-- 🇰🇷 한국어 (Korean)
-- 🇫🇷 Français (French)
-- 🇩🇪 Deutsch (German)
-- 🇪🇸 Español (Spanish)
-- 🇷🇺 Русский (Russian)
-- And other major languages
+### Fully Supported ⭐⭐⭐
 
-**How it works:**
-- If you ask in Chinese → Report generated in Chinese
-- If you ask in English → Report generated in English
-- If you ask in Japanese → Report generated in Japanese
-- And so on...
+Complete templates, full documentation, and comprehensive technical module support.
 
-**Language-Specific Features:**
-- Report templates adapt to language-specific formatting conventions
-- Knowledge base updates use appropriate language for the context
-- Section headings, labels, and UI elements are fully localized
-- Proper handling of language-specific quotation marks and punctuation
+| Language | Status | Features |
+|----------|--------|----------|
+| 🇨🇳 中文 (Chinese) | **Fully Supported** | Complete 9-section templates, full technical reading workflow (6 phases), all technical module templates, bidirectional WikiLinks, automated knowledge base updates |
+| 🇬🇧 English | **Fully Supported** | Complete 9-section templates, full technical reading workflow (6 phases), all technical module templates, bidirectional WikiLinks, automated knowledge base updates |
+
+### Supported ⭐⭐
+
+Basic templates available. Some technical terms may retain English. Technical module templates may be partial.
+
+| Language | Status | Notes |
+|----------|--------|-------|
+| 🇯🇵 日本語 (Japanese) | Supported | Basic templates functional, some English terms may appear |
+| 🇰🇷 한국어 (Korean) | Supported | Basic templates functional, some English terms may appear |
+| 🇫🇷 Français (French) | Supported | Basic templates functional, some English terms may appear |
+| 🇩🇪 Deutsch (German) | Supported | Basic templates functional, some English terms may appear |
+| 🇪🇸 Español (Spanish) | Supported | Basic templates functional, some English terms may appear |
+| 🇷🇺 Русский (Russian) | Supported | Basic templates functional, some English terms may appear |
+| Other languages | Best-effort | Will attempt to match your input language |
+
+### How It Works
+
+```
+Your Input → Language Detection → Template Selection → Report Generation
+```
+
+- Ask in **Chinese** → Report in Chinese (Full support)
+- Ask in **English** → Report in English (Full support)
+- Ask in **Japanese** → Report in Japanese (Basic support)
+- Ask in **Other languages** → Report in your language (Best-effort)
+
+### Language-Specific Features (Fully Supported Languages)
+
+| Feature | Chinese | English | Other Languages |
+|---------|:-------:|:-------:|:---------------:|
+| 9-section report templates | ✅ | ✅ | ⚠️ Partial |
+| Technical reading workflow | ✅ | ✅ | ⚠️ Partial |
+| Technical module templates | ✅ | ✅ | ⚠️ Partial |
+| Author/Concept/MOC templates | ✅ | ✅ | ⚠️ Partial |
+| Bidirectional WikiLinks | ✅ | ✅ | ⚠️ Basic |
+| Automated knowledge base updates | ✅ | ✅ | ⚠️ Basic |
+| Section headings localization | ✅ | ✅ | ✅ |
+| Punctuation/quotation marks | ✅ | ✅ | ✅ |
 
 ## Your Role
 
