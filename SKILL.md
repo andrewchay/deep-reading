@@ -566,15 +566,87 @@ At the start of each session:
 
 ### Technical Reading Workflow
 
+⚠️ **CRITICAL: Link Validity Rule** — Always create files in dependency order: **leaf nodes (technical modules) first, main report last**. This ensures all WikiLinks point to existing files.
+
+#### Phase 1: Analysis & Planning
 1. **Detect language** from user request and select appropriate template
 2. **Identify material type**: slides, paper, lecture notes, documentation
 3. **Extract high-level structure**: main topics, flow of ideas
 4. **Map technical topics**: identify distinct technical subjects that deserve separate treatment
-5. **Create main report**: overview with links to technical modules
-6. **Create technical modules**: one per major technical topic
-7. **Establish cross-links**: connect related modules and concepts
-8. **Add personal annotations**: research ideas, questions, connections
-9. **Update knowledge base**: author page, technical concepts, domain MOC (adapted to user's language)
+5. **Plan file structure**: 
+   - List all technical modules to create
+   - List all concepts/authors that need pages
+   - Determine dependency order (which module references which)
+
+#### Phase 2: Infrastructure
+6. **Create folder structure**: `Technical Notes/{Title}/`
+7. **Prepare index**: Add placeholder entry to reading reports index
+
+#### Phase 3: Technical Modules (LEAF NODES FIRST)
+8. **Create technical modules in dependency order**:
+   - Start with modules that don't depend on others
+   - Each module should link back to the (future) main report
+   - DO NOT include links to other technical modules yet
+   - DO include links to concept pages (they will be created in Phase 4)
+9. **Verify module completeness**: Each module should have: source link, content, back-link to main report
+
+#### Phase 4: Knowledge Base Pages
+10. **Create/update author pages** (if not exists)
+11. **Create/update concept pages** (if not exists)
+12. **Prepare MOCs**: Ensure domain MOCs exist for linking
+
+#### Phase 5: Main Report (ROOT NODE LAST)
+13. **Create main report**: 
+    - At this point, ALL linked files (modules, concepts, authors) MUST exist
+    - Include WikiLinks to all technical modules
+    - Include WikiLinks to authors and key concepts
+    - Add extended reading links
+
+#### Phase 6: Cross-Linking & Finalization
+14. **Add inter-module links**: Go back to technical modules and add links between related modules
+15. **Update index**: Convert placeholder entry to final link
+16. **Final verification**: Ensure no empty WikiLinks exist
+
+---
+
+### WikiLink Creation Rules
+
+#### Rule 1: Link Target Must Exist
+**BEFORE creating any link, verify the target file exists.**
+
+❌ **Bad**:
+```markdown
+# Main Report
+See [[Technical Notes/Title/Module|detailed notes]]  # Module doesn't exist yet!
+```
+
+✅ **Good**:
+```markdown
+# Main Report (created AFTER module exists)
+See [[Technical Notes/Title/Module|detailed notes]]  # Module already exists
+```
+
+#### Rule 2: Directional Link Strategy
+
+| Link Direction | Creation Order | Example |
+|---------------|----------------|---------|
+| Main Report → Module | Module first | Phase 3 creates module, Phase 5 links to it |
+| Module → Main Report | Main report created after | Use placeholder text if needed |
+| Module A → Module B | B before A | If A references B, create B first |
+| Any → Concept/Author | Concept/Author first | Phase 4 before Phase 5 |
+
+#### Rule 3: Placeholder Handling
+If you MUST reference something before it exists:
+- Use plain text: `详见后续章节"DPO原理"`
+- Or create a minimal placeholder file first
+- NEVER create `[[Link|text]]` pointing to non-existent files
+
+#### Rule 4: Path Consistency
+- Main report: `Second Brain/Reading Reports/{Title} - 技术阅读报告.md`
+- Modules: `Second Brain/Reading Reports/Technical Notes/{Title}/{Module}.md`
+- Authors: `Second Brain/Database/Authors/{Name}.md`
+- Concepts: `Second Brain/Database/Concepts/{Concept}.md`
+- MOCs: `Second Brain/MOCs/{Domain}.md`
 
 ---
 
@@ -1359,10 +1431,78 @@ The skill automatically detects mode based on:
 
 ---
 
+## Link Validation Checklist
+
+**CRITICAL**: Before completing any technical reading report, verify all WikiLinks point to existing files.
+
+### Pre-Creation Checklist
+- [ ] Listed all technical modules to create
+- [ ] Listed all concept pages to create/update
+- [ ] Listed all author pages to create/update
+- [ ] Determined creation order (dependencies first)
+
+### During Creation Checklist
+- [ ] Phase 3: All technical modules created BEFORE main report
+- [ ] Phase 4: All concept/author pages created BEFORE main report
+- [ ] Phase 5: Verify each link target exists before including in main report
+
+### Post-Creation Verification
+Run this mental check for every `[[...]]` in generated files:
+
+```
+For each WikiLink [[path|text]]:
+  1. Does the file at 'path' exist?
+  2. If not, either:
+     - Create the target file, OR
+     - Remove the link and use plain text
+  3. Is the path format correct?
+     - Technical modules: Technical Notes/{Title}/{Module}
+     - Authors: Database/Authors/{Name}
+     - Concepts: Database/Concepts/{Concept}
+     - MOCs: MOCs/{Domain}
+```
+
+### Common Mistakes to Avoid
+
+❌ **Creating main report before modules**:
+```markdown
+# In main report (WRONG)
+See [[Technical Notes/Paper/Method|details]]  # File doesn't exist yet!
+```
+
+✅ **Correct order**:
+```markdown
+# Step 1: Create Technical Notes/Paper/Method.md first
+# Step 2: Then create main report with:
+See [[Technical Notes/Paper/Method|details]]  # File now exists
+```
+
+❌ **Linking to future concepts**:
+```markdown
+# In module (WRONG)
+See [[Process Reward Model]] for details  # Concept page not created yet
+```
+
+✅ **Correct approach**:
+```markdown
+# Step 1: Create Database/Concepts/Process Reward Model.md
+# Step 2: Then add link in module
+```
+
+### Emergency Fix
+
+If you accidentally created empty links:
+
+1. **Identify empty links**: Search for `[[...]]` patterns where target doesn't exist
+2. **Create missing targets** or **replace with plain text**
+3. **Never leave empty WikiLinks in final output**
+
+---
+
 ## Automatic Updates Include
 
-✅ Main report file with WikiLinks  
-✅ Technical detail modules (for technical reading)  
+✅ Main report file with **valid** WikiLinks (all targets exist)  
+✅ Technical detail modules (created BEFORE main report links to them)  
 ✅ Reading reports index  
 ✅ Author page (create or update)  
 ✅ Concept pages for key ideas (create or update)  
@@ -1371,23 +1511,59 @@ The skill automatically detects mode based on:
 ✅ Knowledge base master index  
 ✅ Cross-links between all related materials  
 
-All updates preserve existing content and add new connections.
+All updates preserve existing content and add new connections. All links are validated.
 
 ---
 
-## Example: Analyzing Brad Efron's Slides
+## Example: Analyzing Brad Efron's Slides (CORRECT ORDER)
 
 When user provides `/Users/chaihao/Library/Mobile Documents/com~apple~CloudDocs/Documents/stat/Great Talks/2009BootstrapMethods.pdf`:
 
+### Phase 1: Analysis & Planning
 1. **Identify as technical reading** (academic slides)
-2. **Create main report**: `Second Brain/Reading Reports/Bootstrap Methods (Efron 2009) - 技术阅读报告.md`
-3. **Create technical modules**:
+2. **Plan structure**:
+   - Modules needed: 重采样理论, 自助法算法, 置信区间构造, 方法对比
+   - Concepts needed: Bootstrap, Resampling, Empirical Bayes
+   - Author: Brad Efron
+   - Domain MOCs: 统计学习, 贝叶斯统计
+
+### Phase 2: Infrastructure
+3. **Create folder**: `Technical Notes/Bootstrap Methods/`
+4. **Add placeholder to index**: Reading Reports Index.md
+
+### Phase 3: Technical Modules (LEAF FIRST)
+5. **Create modules in dependency order**:
    - `Technical Notes/Bootstrap Methods/重采样理论基础.md`
+     - Content: theory, math
+     - Link back to future main report: `[[Bootstrap Methods (Efron 2009) - 技术阅读报告|主报告]]`
    - `Technical Notes/Bootstrap Methods/自助法算法.md`
+     - Content: algorithm details
+     - Links to: 重采样理论基础 (wait for Phase 6)
    - `Technical Notes/Bootstrap Methods/置信区间构造.md`
+     - Content: CI construction methods
    - `Technical Notes/Bootstrap Methods/与其他方法的比较.md`
-4. **Link modules in main report** via WikiLinks
-5. **Update author page**: `Second Brain/Database/Authors/Brad Efron.md`
-6. **Create/update technical concepts**: `Bootstrap`, `Resampling`, `Empirical Bayes`
-7. **Update domain MOC**: `统计学习.md`, `贝叶斯统计.md`
-8. **Cross-link** with related talks (e.g., `2007SimInference`, `2012BayesEBInfo`)
+     - Content: comparison with other methods
+     - Links to all other modules (wait for Phase 6)
+
+### Phase 4: Knowledge Base
+6. **Create concept pages**:
+   - `Database/Concepts/Bootstrap.md` (if not exists)
+   - `Database/Concepts/Resampling.md` (if not exists)
+   - `Database/Concepts/Empirical Bayes.md` (if not exists)
+7. **Update author page**: `Database/Authors/Brad Efron.md`
+8. **Update MOCs**: `统计学习.md`, `贝叶斯统计.md`
+
+### Phase 5: Main Report (ROOT LAST)
+9. **Create main report**: `Second Brain/Reading Reports/Bootstrap Methods (Efron 2009) - 技术阅读报告.md`
+   - All linked modules NOW EXIST
+   - All linked concepts NOW EXIST
+   - Include: `[[Technical Notes/Bootstrap Methods/重采样理论基础|重采样理论]]`
+   - Include: `[[Database/Authors/Brad Efron|Brad Efron]]`
+   - Include: `[[Database/Concepts/Bootstrap|Bootstrap]]`
+
+### Phase 6: Cross-Linking
+10. **Add inter-module links**:
+    - Go back to each module
+    - Add links: `[[Technical Notes/Bootstrap Methods/自助法算法|算法实现]]` etc.
+11. **Update index**: Convert placeholder to final link
+12. **Verify**: All `[[...]]` point to existing files ✓
