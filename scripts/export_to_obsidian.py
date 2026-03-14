@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 Export deep reading report to Obsidian vault with WikiLinks.
+Compatible with Kimi CLI, Claude Code, and other AI coding assistants.
 """
 
 import argparse
@@ -22,16 +23,21 @@ def sanitize_filename(title: str) -> str:
     return title.strip()
 
 
-def generate_report_filename(book_title: str) -> str:
-    """Generate filename for the report."""
+def generate_report_filename(book_title: str, language: str = "en") -> str:
+    """Generate filename for the report based on language."""
     safe_title = sanitize_filename(book_title)
-    return f"{safe_title} - 深度阅读报告.md"
+    suffix = " - Deep Reading Report.md" if language == "en" else " - 深度阅读报告.md"
+    return f"{safe_title}{suffix}"
 
 
-def generate_index_entry(book_title: str, author: str, domain: str, report_path: str) -> str:
+def generate_index_entry(book_title: str, author: str, domain: str, report_path: str, language: str = "en") -> str:
     """Generate entry for books index."""
     link = f"[[{report_path}|{book_title}]]"
-    return f"| {link} | {author} | {domain} | {datetime.now().strftime('%Y-%m-%d')} |"
+    date_str = datetime.now().strftime('%Y-%m-%d')
+    if language == "zh":
+        return f"| {link} | {author} | {domain} | {date_str} |"
+    else:
+        return f"| {link} | {author} | {domain} | {date_str} |"
 
 
 def create_obsidian_report(
@@ -48,7 +54,8 @@ def create_obsidian_report(
     one_liner: str,
     further_reading: list,
     vault_path: str,
-    output_folder: str = "Second Brain/Reading Reports"
+    output_folder: str = "Second Brain/Reading Reports",
+    language: str = "en"
 ) -> str:
     """
     Create Obsidian markdown report with WikiLinks.
@@ -60,16 +67,188 @@ def create_obsidian_report(
     output_dir.mkdir(parents=True, exist_ok=True)
     
     # Generate filename
-    filename = generate_report_filename(book_title)
+    filename = generate_report_filename(book_title, language)
     filepath = output_dir / filename
     
     # Create relative path for WikiLinks
     rel_path = f"{output_folder}/{filename.replace('.md', '')}"
     
-    # Build report content
+    # Build report content based on language
+    if language == "zh":
+        content = _build_chinese_report(
+            book_title, author, domain, sub_domain, takeaways, credibility,
+            reviews, critiques, quotes, actions, one_liner, further_reading
+        )
+    else:
+        content = _build_english_report(
+            book_title, author, domain, sub_domain, takeaways, credibility,
+            reviews, critiques, quotes, actions, one_liner, further_reading
+        )
+    
+    # Write file
+    filepath.write_text(content, encoding='utf-8')
+    
+    return str(filepath), rel_path
+
+
+def _build_english_report(
+    book_title: str,
+    author: str,
+    domain: str,
+    sub_domain: str,
+    takeaways: list,
+    credibility: dict,
+    reviews: str,
+    critiques: dict,
+    quotes: list,
+    actions: dict,
+    one_liner: str,
+    further_reading: list
+) -> str:
+    """Build English report content."""
+    
+    content = f"""# {book_title} - Deep Reading Report
+
+> **Author**: [[Authors/{author}|{author}]]  
+> **Analysis Date**: {datetime.now().strftime('%Y-%m-%d %H:%M')}  
+> **Tags**: #book-report #{' #'.join(domain.lower().split()) if domain else 'reading'}
+
+---
+
+## 1. Domain & Positioning
+
+| Dimension | Content |
+|-----------|---------|
+| **Core Domain** | {domain} |
+| **Sub-domain** | {sub_domain} |
+| **Target Readers** | {credibility.get('target_readers', 'TBD')} |
+| **Problem Addressed** | {credibility.get('problem', 'TBD')} |
+
+---
+
+## 2. Core Takeaways
+
+"""
+    
+    # Add takeaways
+    for i, takeaway in enumerate(takeaways, 1):
+        content += f"""### {i}. {takeaway.get('title', f'Takeaway {i}')}
+{takeaway.get('explanation', '')}
+
+"""
+    
+    content += f"""---
+
+## 3. Credibility Assessment
+
+| Dimension | Assessment |
+|-----------|------------|
+| **Primary Argument** | {credibility.get('method', 'TBD')} |
+| **Data Sources** | {credibility.get('sources', 'TBD')} |
+| **Credibility** | {'⭐' * credibility.get('rating', 3)} ({credibility.get('rating_text', 'Medium')}) |
+| **Key Limitations** | {credibility.get('limitations', 'TBD')} |
+
+---
+
+## 4. Reviews & Secondary Perspectives
+
+{reviews if reviews else '> External reviews and critical perspectives to be added'}
+
+---
+
+## 5. Critical Reflection
+
+### Implicit Assumptions
+{chr(10).join(['- ' + p for p in critiques.get('assumptions', ['TBD'])])}
+
+### Potential Biases
+{chr(10).join(['- ' + b for b in critiques.get('biases', ['TBD'])])}
+
+### Counter-examples
+{chr(10).join(['- ' + c for c in critiques.get('counterexamples', ['TBD'])])}
+
+---
+
+## 6. Compelling Excerpts
+
+"""
+    
+    # Add quotes
+    for i, quote in enumerate(quotes, 1):
+        content += f"""> {quote.get('text', '')}
+> —— *{quote.get('location', 'Book')}*
+
+**Value**: {quote.get('value', 'TBD')}
+
+**Application**: {quote.get('scene', 'TBD')}
+
+---
+
+"""
+    
+    content += f"""## 7. Actionable Recommendations
+
+### For General Readers
+{chr(10).join(['- ' + a for a in actions.get('general', ['TBD'])])}
+
+### For Professionals
+{chr(10).join(['- ' + a for a in actions.get('professional', ['TBD'])])}
+
+---
+
+## 8. One-Sentence Summary
+
+> **{one_liner}**
+
+---
+
+## 9. Extended Reading
+
+"""
+    
+    # Add further reading with potential links
+    for book in further_reading:
+        title = book.get('title', '')
+        author = book.get('author', '')
+        relation = book.get('relation', '')
+        content += f"- **[[{title}]]** - {author} ({relation})\n"
+    
+    content += f"""
+---
+
+## 🔗 Related Links
+
+- [[Second Brain/Reading Reports/📚 Reading Reports Index|Back to Index]]
+- [[Second Brain/MOCs/{domain.replace(' ', '-') if domain else 'Reading'}|Related Domain]]
+
+---
+
+> 📖 *Generated by Deep Reading Analyst AI*  
+> 🏷️ Tags: #book-report #{' #'.join(domain.lower().split()[:3]) if domain else 'reading'} #{' #'.join(author.lower().split()[:2]) if author else 'unknown-author'}
+"""
+    
+    return content
+
+
+def _build_chinese_report(
+    book_title: str,
+    author: str,
+    domain: str,
+    sub_domain: str,
+    takeaways: list,
+    credibility: dict,
+    reviews: str,
+    critiques: dict,
+    quotes: list,
+    actions: dict,
+    one_liner: str,
+    further_reading: list
+) -> str:
+    """Build Chinese report content."""
+    
     content = f"""# 《{book_title}》深度阅读报告
 
-> **作者**: {author}  
+> **作者**: [[Authors/{author}|{author}]]  
 > **分析日期**: {datetime.now().strftime('%Y-%m-%d %H:%M')}  
 > **标签**: #book-report #{' #'.join(domain.lower().split()) if domain else 'reading'}
 
@@ -92,7 +271,7 @@ def create_obsidian_report(
     
     # Add takeaways
     for i, takeaway in enumerate(takeaways, 1):
-        content += f"""### {i}. {takeaway.get('title', f'Takeaway {i}')}
+        content += f"""### {i}. {takeaway.get('title', f'要点 {i}')}
 {takeaway.get('explanation', '')}
 
 """
@@ -166,12 +345,11 @@ def create_obsidian_report(
 
 """
     
-    # Add further reading with potential links
+    # Add further reading
     for book in further_reading:
         title = book.get('title', '')
         author = book.get('author', '')
         relation = book.get('relation', '')
-        # Create potential wikilink if book exists in vault
         content += f"- **[[{title}]]** - {author} ({relation})\n"
     
     content += f"""
@@ -180,7 +358,7 @@ def create_obsidian_report(
 ## 🔗 相关链接
 
 - [[Second Brain/Reading Reports/📚 阅读报告索引|返回阅读报告索引]]
-- [[Second Brain/Areas/{'/'.join(domain.split()[:2]) if domain else 'Reading'}/{'/'.join(domain.split()[:2]) if domain else 'Reading'}|相关领域]]
+- [[Second Brain/MOCs/{domain.replace(' ', '-') if domain else 'Reading'}|相关领域]]
 
 ---
 
@@ -188,10 +366,7 @@ def create_obsidian_report(
 > 🏷️ 标签: #book-report #{' #'.join(domain.lower().split()[:3]) if domain else 'reading'} #{' #'.join(author.lower().split()[:2]) if author else 'unknown-author'}
 """
     
-    # Write file
-    filepath.write_text(content, encoding='utf-8')
-    
-    return str(filepath), rel_path
+    return content
 
 
 def update_books_index(
@@ -200,12 +375,13 @@ def update_books_index(
     author: str,
     domain: str,
     report_path: str,
-    index_path: str = "Second Brain/Reading Reports/📚 阅读报告索引.md"
+    index_path: str = "Second Brain/Reading Reports/📚 Reading Reports Index.md",
+    language: str = "en"
 ) -> None:
     """Update or create books index file."""
     
     index_file = Path(vault_path) / index_path
-    entry = generate_index_entry(book_title, author, domain, report_path)
+    entry = generate_index_entry(book_title, author, domain, report_path, language)
     
     if index_file.exists():
         # Read existing content
@@ -220,7 +396,8 @@ def update_books_index(
             index_file.write_text(content, encoding='utf-8')
     else:
         # Create new index
-        content = f"""# 📚 阅读报告索引
+        if language == "zh":
+            content = f"""# 📚 阅读报告索引
 
 > 本索引包含所有 AI 深度阅读报告，按分析日期排序。
 
@@ -246,6 +423,33 @@ def update_books_index(
 
 > 🔄 *最后更新: {datetime.now().strftime('%Y-%m-%d %H:%M')}*
 """
+        else:
+            content = f"""# 📚 Reading Reports Index
+
+> This index contains all AI deep reading reports, sorted by analysis date.
+
+## Book List
+
+| Title | Author | Domain | Date |
+|-------|--------|--------|------|
+{entry}
+
+---
+
+## By Domain
+
+To be organized...
+
+---
+
+## By Author
+
+To be organized...
+
+---
+
+> 🔄 *Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M')}*
+"""
         index_file.parent.mkdir(parents=True, exist_ok=True)
         index_file.write_text(content, encoding='utf-8')
 
@@ -256,6 +460,7 @@ def main():
     parser.add_argument('--title', required=True, help='Book title')
     parser.add_argument('--author', default='Unknown', help='Book author')
     parser.add_argument('--domain', default='', help='Core domain')
+    parser.add_argument('--language', default='en', choices=['en', 'zh'], help='Report language')
     parser.add_argument('--output-folder', default='Second Brain/Reading Reports', 
                        help='Output folder within vault')
     
@@ -265,6 +470,7 @@ def main():
     print(f"Creating report for: {args.title}")
     print(f"Vault: {args.vault}")
     print(f"Output: {args.output_folder}")
+    print(f"Language: {args.language}")
     
     # Placeholder - actual data would come from the AI analysis
     filepath, rel_path = create_obsidian_report(
@@ -281,7 +487,8 @@ def main():
         one_liner="",
         further_reading=[],
         vault_path=args.vault,
-        output_folder=args.output_folder
+        output_folder=args.output_folder,
+        language=args.language
     )
     
     print(f"Report created: {filepath}")

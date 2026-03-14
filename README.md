@@ -16,7 +16,7 @@
 
 <h2 id="english">🇬🇧 English</h2>
 
-An AI skill for [Kimi Code CLI](https://github.com/yuyarin/deep-reading) that performs deep, critical analysis of books, papers, and web content. Automatically generates structured reading reports and maintains an interconnected knowledge base in Obsidian.
+An AI skill for [Kimi Code CLI](https://github.com/your-repo/kimi-cli), [Claude Code](https://github.com/anthropics/anthropic-cookbook), and other AI coding assistants that performs deep, critical analysis of books, papers, and web content. Automatically generates structured reading reports and maintains an interconnected knowledge base in Obsidian.
 
 ### ✨ Features
 
@@ -70,14 +70,24 @@ An AI skill for [Kimi Code CLI](https://github.com/yuyarin/deep-reading) that pe
 
 ### 🔧 Installation
 
-1. Copy this skill to your Kimi CLI skills directory:
-   ```bash
-   cp -r deep-reading ~/.config/agents/skills/
-   ```
+#### For Kimi CLI
+```bash
+cp -r deep-reading ~/.config/agents/skills/
+```
 
-2. Configure your Obsidian vault path in the scripts (optional)
+#### For Claude Code
+```bash
+# Copy to your Claude Code skills directory
+cp -r deep-reading ~/.claude/skills/
+# Or use the skills directory configured in your setup
+```
 
-3. Start using trigger commands - no explicit skill name needed!
+#### For Other AI Assistants
+Copy the skill files to your assistant's skills/plugins directory and configure as needed.
+
+#### Configuration
+1. Configure your Obsidian vault path in the scripts (optional)
+2. Start using trigger commands - no explicit skill name needed!
 
 ### 📁 Project Structure
 
@@ -97,7 +107,7 @@ deep-reading/
 
 <h2 id="中文">🇨🇳 中文</h2>
 
-适用于 [Kimi Code CLI](https://github.com/your-repo/kimi-cli) 的 AI Skill，对书籍、论文和网页内容进行深度批判性分析。自动生成结构化阅读报告，并在 Obsidian 中维护互联的知识库。
+适用于 [Kimi Code CLI](https://github.com/your-repo/kimi-cli)、[Claude Code](https://github.com/anthropics/anthropic-cookbook) 等 AI 编程助手的 Skill，对书籍、论文和网页内容进行深度批判性分析。自动生成结构化阅读报告，并在 Obsidian 中维护互联的知识库。
 
 ### ✨ 功能特点
 

@@ -1,6 +1,17 @@
-# Deep Reading Analyst - 快速启动指南
+# Deep Reading Analyst - 快速启动指南 (Quick Start Guide)
 
-> 无需提及 skill 名称的简洁触发方式
+> 适用于 Kimi CLI、Claude Code 等 AI 助手的简洁触发方式
+> 
+> Simple triggering for Kimi CLI, Claude Code, and other AI assistants
+
+---
+
+## 🌐 Language Support
+
+This skill supports multiple languages:
+- 🇨🇳 中文 (Chinese) - This guide
+- 🇬🇧 English - See [SKILL.md](SKILL.md) for English documentation
+- 🇯🇵 日本語 (Japanese) - See [SKILL.md](SKILL.md) for Japanese templates
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: deep-reading
-description: Analyze books and technical materials (PDF, EPUB, AZW3, MOBI, slides, papers, lecture notes, web articles) and generate deep reading reports that transform content into cognitive assets, mental models, and actionable insights. Supports both general reading and technical reading modes with modular technical detail extraction. Automatically converts ebooks to text for analysis. Updates Obsidian knowledge base (authors, concepts, domain MOCs) after generating each report. Auto-detects user's input language and generates reports in the same language (supports Chinese, English, Japanese, and other major languages). Use when the user asks to analyze a book, generate a reading report, extract key insights, or evaluate arguments from a book.
+description: Analyze books and technical materials (PDF, EPUB, AZW3, MOBI, slides, papers, lecture notes, web articles) and generate deep reading reports that transform content into cognitive assets, mental models, and actionable insights. Supports both general reading and technical reading modes with modular technical detail extraction. Automatically converts ebooks to text for analysis. Updates Obsidian knowledge base (authors, concepts, domain MOCs) after generating each report. Auto-detects user's input language and generates reports in the same language (supports Chinese, English, Japanese, and other major languages). Compatible with Kimi CLI, Claude Code, and other AI coding assistants. Use when the user asks to analyze a book, generate a reading report, extract key insights, or evaluate arguments from a book.
 ---
 
 # Deep Reading
@@ -1153,7 +1153,7 @@ Use this skill when:
 - User wants to export analysis to Obsidian with automatic knowledge base updates
 - User wants reports in their preferred language (auto-detected from request)
 
-**AUTOMATIC TRIGGERING** — This skill activates automatically when user uses trigger phrases in ANY language. No need to explicitly mention "deep reading analyst".
+**AUTOMATIC TRIGGERING** — This skill activates automatically when user uses trigger phrases in ANY language. Works with Kimi CLI, Claude Code, Cursor, and other AI coding assistants. No need to explicitly mention "deep reading analyst".
 
 **Language Support**:
 - Reports are generated in the same language as the user's request
