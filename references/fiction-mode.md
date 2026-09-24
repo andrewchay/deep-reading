@@ -252,10 +252,10 @@ Sections that carry over unchanged in spirit: one-sentence summary, excerpts wit
 
 - **Report file**: `Second Brain/Reading Reports/{Title} - 小说阅读报告.md` / `{Title} - Fiction Reading Report.md`
 - **Index**: append to `📚 阅读报告索引.md` — same protocol as general mode; put entry under a 文学/小说 grouping if the index has one
-- **Author pages**: same author template as general mode; section 简介 should mention the author's fiction oeuvre and style signature
-- **Concept pages**: for themes and literary devices create concept pages with tags `#literary-theme` / `#literary-device` (e.g., [[不可靠叙述者]], [[不可靠叙事]]; [[In medias res]]). Use the general concept template, replacing the formal-definition block with textual examples
-- **MOC**: add to `Second Brain/MOCs/文学与小说.md` (create with general MOC template if missing); genre sub-groupings (科幻小说, 推理小说, 文学小说, etc.) are welcome
-- **WikiLink rules**: identical to SKILL.md — targets must exist before linking
+- **Author pages**: use the Author Page Templates in `references/kb-templates.md`; section 简介 should mention the author's fiction oeuvre and style signature
+- **Concept pages**: for themes and literary devices create concept pages with tags `#literary-theme` / `#literary-device` (e.g., [[不可靠叙述者]], [[不可靠叙事]]; [[In medias res]]). Base them on the concept template in `references/kb-templates.md`, replacing the formal-definition block with textual examples
+- **MOC**: add to `Second Brain/MOCs/文学与小说.md` (create from the Domain MOC Templates in `references/kb-templates.md` if missing); genre sub-groupings (科幻小说, 推理小说, 文学小说, etc.) are welcome
+- **WikiLink rules**: all `[[...]]` targets must exist before linking — same leaf-first discipline as technical mode (`references/technical-mode.md` → WikiLink Creation Rules)
 
 ## Interaction with Other Modes
 
