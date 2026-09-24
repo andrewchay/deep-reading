@@ -1,6 +1,6 @@
 ---
 name: deep-reading
-description: Analyze books and technical materials (PDF, EPUB, AZW3, MOBI, slides, papers, lecture notes, web articles) and generate deep reading reports that transform content into cognitive assets, mental models, and actionable insights. Supports both general reading and technical reading modes with modular technical detail extraction. Automatically converts ebooks to text for analysis. Updates Obsidian knowledge base (authors, concepts, domain MOCs) after generating each report. Auto-detects user's input language and generates reports in the same language (supports Chinese, English, Japanese, and other major languages). Compatible with Kimi CLI, Claude Code, and other AI coding assistants. Use when the user asks to analyze a book, generate a reading report, extract key insights, or evaluate arguments from a book.
+description: Analyze books, fiction, and technical materials (PDF, EPUB, AZW3, MOBI, slides, papers, lecture notes, web articles) and generate deep reading reports that transform content into cognitive assets, mental models, and actionable insights. Supports three modes — general reading, fiction reading (narrative analysis for novels and short stories, via references/fiction-mode.md), and technical reading with modular technical detail extraction. Automatically converts ebooks to text for analysis. Updates Obsidian knowledge base (authors, concepts, domain MOCs) after generating each report. Auto-detects user's input language and generates reports in the same language (supports Chinese, English, Japanese, and other major languages). Compatible with Kimi CLI, Claude Code, and other AI coding assistants. Use when the user asks to analyze a book, generate a reading report, extract key insights, or evaluate arguments from a book.
 ---
 
 # Deep Reading
@@ -67,7 +67,7 @@ You are a **Deep Reading Analyst**. Your task is not to summarize content superf
 - **For technical content**: Extract detailed technical notes into modular sub-documents linked from main report
 - Maintain and grow an interconnected knowledge base in Obsidian
 
-## Two Reading Modes
+## Reading Modes
 
 ### Mode 1: General Reading (Default)
 For books, essays, general non-fiction. Generates a single comprehensive report following the standard 9-section format.
@@ -77,6 +77,11 @@ For academic papers, lecture slides, technical documentation, research talks. Ge
 1. **Main Report** - High-level overview with links to technical details
 2. **Technical Detail Modules** - Separate markdown files for deep technical content
 3. **Cross-linking** - All modules interconnected via WikiLinks
+
+### Mode 3: Fiction Reading
+For novels, novellas, short story collections, literary fiction. Generates a single 9-section **fiction reading report** centered on narrative analysis: plot structure & POV, character arcs, themes & motifs, prose style, literary lineage, and critical reception.
+
+⚠️ **Progressive disclosure**: When fiction is detected, **READ `references/fiction-mode.md`** before generating the report. That file contains the fiction role adjustment, spoiler policy (default: user has finished the book — full spoilers allowed), the fiction report templates (中文/English/日本語), section guidance, and fiction-specific Obsidian integration rules. Do not reconstruct these from memory; load the reference file.
 
 ---
 
@@ -685,6 +690,7 @@ When exporting to Obsidian, adapt the following based on user's request language
 | Element | Chinese | English | Other Languages |
 |:---|:---|:---|:---|
 | Report Filename | `{Title} - 深度阅读报告.md` | `{Title} - Deep Reading Report.md` | Adapted to language |
+| Fiction Report | `{Title} - 小说阅读报告.md` | `{Title} - Fiction Reading Report.md` | Adapted to language |
 | Technical Report | `{Title} - 技术阅读报告.md` | `{Title} - Technical Reading Report.md` | Adapted to language |
 | Index File | `📚 阅读报告索引.md` | `📚 Reading Reports Index.md` | Use English or adapt |
 | Author Folder | `Authors/` | `Authors/` | `Authors/` (universal) |
@@ -719,6 +725,11 @@ When exporting to Obsidian, adapt the following based on user's request language
 **For General Reading:**
 - Location: `Second Brain/Reading Reports/`
 - Filename: `{Book Title} - 深度阅读报告.md`
+
+**For Fiction Reading:**
+- Location: `Second Brain/Reading Reports/`
+- Filename: `{Title} - 小说阅读报告.md`
+- Follow `references/fiction-mode.md` for fiction-specific WikiLink and MOC rules (文学与小说 MOC, theme/device concept pages)
 
 **For Technical Reading:**
 - Location: `Second Brain/Reading Reports/`
@@ -1127,6 +1138,7 @@ Use this mapping to determine which MOC to update:
 | 经济学, economics, 金融, 投资 | 经济学与金融.md |
 | 历史, history, 文明, 文化 | 历史与文明.md |
 | 神学, theology, 圣经, 灵修 | 神学与灵修.md |
+| 小说, fiction, 文学, 叙事, novel, short story | 文学与小说.md |
 | 领导力, leadership, 管理, 组织 | 领导力与管理.md |
 | 科技, technology, AI, 互联网 | 科技与社会.md |
 | **统计学, statistics, 统计学习, 推断** | **统计学习.md** |
@@ -1168,6 +1180,7 @@ Use this skill when:
 - User provides book content (text, PDF, EPUB, AZW3, MOBI) for analysis
 - User asks for "deep reading" or "critical analysis" of a book
 - User wants to extract mental models or frameworks from a book
+- **User wants to analyze a novel, novella, or short story collection (fiction mode: narrative analysis with full-spoiler plot discussion)**
 - User requests evaluation of a book's arguments or credibility
 - User needs a structured reading report with actionable insights
 - **User wants to analyze technical materials (slides, papers, lecture notes)**
@@ -1206,6 +1219,22 @@ Commands work in any language. Below are examples in multiple languages:
 | 🇯🇵 日本語 | `分析 [書名]` | "分析『思考、速くそして遅く』" | General |
 | 🇯🇵 日本語 | `読む [書名]` | "読む Principles" | General |
 | 🇯🇵 日本語 | `要約 [書名]` | "要約 The Elephant in the Brain" | General |
+
+### Fiction Reading Mode (Novels, Short Stories)
+
+Fiction triggers switch to Mode 3 and load `references/fiction-mode.md`.
+
+| Language | Trigger | Example | Mode |
+|:---|:---|:---|:---:|
+| 🇨🇳 中文 | `分析小说 [书名]` | "分析小说《克拉拉与太阳》" | Fiction |
+| 🇨🇳 中文 | `解读小说 [书名]` | "解读小说《漫长的告别》" | Fiction |
+| 🇨🇳 中文 | `书评小说 [书名]` | "书评小说《漫长的告别》" | Fiction |
+| 🇬🇧 English | `analyze novel [title]` | "analyze novel A Gentleman in Moscow" | Fiction |
+| 🇬🇧 English | `analyze fiction [title]` | "analyze fiction Klara and the Sun" | Fiction |
+| 🇬🇧 English | `review novel [title]` | "review novel The Remains of the Day" | Fiction |
+| 🇯🇵 日本語 | `小説を分析 [書名]` | "小説を分析『それから』" | Fiction |
+
+Note: plain `分析 [书名]` stays General mode unless the book is identified as fiction (see Automatic Mode Detection).
 
 ### Technical Reading Mode (Papers, Talks, Slides)
 
@@ -1309,12 +1338,15 @@ The skill automatically detects mode based on:
 - File extension `.pdf` with mathematical content → Technical
 - Filename contains year (2009, 2010, etc.) → Technical  
 - Keywords: "论文", "演讲", "slides", "talk", "paper", "analysis" → Technical
+- Keywords: "小说", "长篇", "中篇", "短篇", "故事集", "文学" / "novel", "fiction", "novella", "short story" / "小説", "フィクション" → **Fiction** (then load `references/fiction-mode.md`)
 - **arXiv URL pattern** (`arxiv.org/abs/`, `arxiv.org/pdf/`) → **arXiv Paper**
 - **URL pattern** (`http://`, `https://`) → **Web Content** (any valid URL)
-- **File extension `.epub`, `.azw3`, `.mobi` → **Ebook**
+- **File extension `.epub`, `.azw3`, `.mobi` → **Ebook** (if ebook metadata/filename indicates a novel or story collection → Fiction mode)
 - Keywords: "链接", "文章", "网页", "微信", "link", "article", "URL" → Web Content
 - Keywords: "arXiv", "arxiv" → **arXiv Paper**
 - Otherwise → General
+
+**Fiction detection rules**: Novels and story collections usually enter via ebook mode or explicit triggers. When in doubt (e.g., narrative non-fiction such as 《冷血》), ask the user whether to use Fiction or General mode. When fiction is confirmed, **read `references/fiction-mode.md`** for templates and workflow before generating the report.
 
 **Language Detection**:
 - Automatically detects language from user's request text
@@ -1437,7 +1469,7 @@ The skill automatically detects mode based on:
 3. **Extract/convert** to plain text
 4. **Parse metadata** (title, author, chapters if available)
 5. **Structure content** (preserve chapter boundaries)
-6. **Apply general reading mode** (books default to general mode)
+6. **Select mode**: novels/story collections → Fiction mode (load `references/fiction-mode.md`); other books → General mode
 7. **Generate report** with standard 9-section format in user's language
 8. **Export to Obsidian** with proper WikiLinks
 
