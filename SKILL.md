@@ -1,6 +1,6 @@
 ---
 name: deep-reading
-description: Analyze books, fiction, and technical materials (PDF, EPUB, AZW3, MOBI, slides, papers, lecture notes, web articles) and generate deep reading reports that transform content into cognitive assets, mental models, and actionable insights. Supports three modes — general reading, fiction reading (narrative analysis for novels and short stories, via references/fiction-mode.md), and technical reading with modular technical detail extraction. Automatically converts ebooks to text for analysis. Updates Obsidian knowledge base (authors, concepts, domain MOCs) after generating each report. Auto-detects user's input language and generates reports in the same language (supports Chinese, English, Japanese, and other major languages). Compatible with Kimi CLI, Claude Code, and other AI coding assistants. Use when the user asks to analyze a book, generate a reading report, extract key insights, or evaluate arguments from a book.
+description: Analyze books, fiction, and technical materials (PDF, EPUB, AZW3, MOBI, slides, papers, lecture notes, web articles) and generate deep reading reports that transform content into cognitive assets, mental models, and actionable insights. Supports six modes — general reading; fiction reading (references/fiction-mode.md); technical reading (references/technical-mode.md); inspectional read-triage "should I read this?" (references/inspectional-mode.md); syntopical cross-book synthesis on a topic (references/syntopical-mode.md); and theological/devotional reading (references/theology-mode.md). Mode-specific templates live in references/ and are loaded on demand (progressive disclosure). Automatically converts ebooks to text for analysis. Updates Obsidian knowledge base (authors, concepts, domain MOCs) after generating each report. Auto-detects user's input language and generates reports in the same language (supports Chinese, English, Japanese, and other major languages). Compatible with Kimi CLI, Claude Code, and other AI coding assistants. Use when the user asks to analyze a book, generate a reading report, extract key insights, or evaluate arguments from a book.
 ---
 
 # Deep Reading
@@ -83,6 +83,21 @@ For novels, novellas, short story collections, literary fiction. Generates a sin
 
 ⚠️ **Progressive disclosure**: When fiction is detected, **READ `references/fiction-mode.md`** before generating the report. That file contains the fiction role adjustment, spoiler policy (default: user has finished the book — full spoilers allowed), the fiction report templates (中文/English/日本語), section guidance, and fiction-specific Obsidian integration rules. Do not reconstruct these from memory; load the reference file.
 
+### Mode 4: Inspectional Reading (Read Triage)
+For the pre-read question "should I read this?" Works for ANY text type (non-fiction, fiction, technical, theology). Generates a compact **verdict card** — verdict + confidence, what the book is, who it's for, KB overlap, an 80/20 reading path, and external reception at a glance. NOT a full 9-section report; default spoiler policy is the reverse of fiction mode (user has NOT read: no endings or major twists unless asked).
+
+⚠️ **Progressive disclosure**: **READ `references/inspectional-mode.md`** — verdict card templates (中文/English/日本語), sampling workflow, and export policy (conversation-first; Obsidian export only on request).
+
+### Mode 5: Syntopical Reading (Topic Synthesis)
+For a topic + multiple books (or a comparative request over 2+ same-domain books). Generates: per-book extraction plus a **synthesis report** — consensus map, disagreement table with position representatives, intellectual lineage, methodological differences, and a recommended reading order. This mode is the reverse engine of the domain MOC: it builds the MOC's consensus-and-debate map from a book cluster.
+
+⚠️ **Progressive disclosure**: **READ `references/syntopical-mode.md`** — the 5-phase workflow (frame → per-book extraction → synthesis → KB landing → reading order), shared extraction block, synthesis templates (中文/English), and MOC update rules.
+
+### Mode 6: Theology & Devotional Reading
+For Bible commentaries, systematic/biblical theology, devotionals, Christian living, theological essays, doctrinal church history. Generates a 9-section theological report with two disciplines that general mode cannot provide: (1) separation of exegesis (what the text says) from application (what to do), each evaluated differently; (2) presentation-without-adjudication of cross-tradition doctrinal disputes (state positions, textual bases, and which traditions affirm/deny — never declare a denominational winner).
+
+⚠️ **Progressive disclosure**: **READ `references/theology-mode.md`** — theological templates (中文/English/日本語), Scripture-handling rules, type weighting by book genre (commentary vs. devotional vs. systematic theology), and KB integration (神学与灵修 MOC, doctrine concept pages, per-biblical-book pages).
+
 ## Reference Files (Progressive Disclosure)
 
 SKILL.md holds only what every run needs (mode routing, the general-reading template, shared protocols). Mode-specific content and the template library live in `references/` and are READ on demand — never reconstruct them from memory.
@@ -92,6 +107,9 @@ SKILL.md holds only what every run needs (mode routing, the general-reading temp
 | Fiction detected (novels, novellas, story collections) | `references/fiction-mode.md` |
 | Technical detected (papers, slides, docs, arXiv) | `references/technical-mode.md` |
 | Creating/updating author, concept, or MOC pages | `references/kb-templates.md` |
+| "Should I read this?" / pre-read judgment | `references/inspectional-mode.md` |
+| Topic + multiple books / cross-book comparison | `references/syntopical-mode.md` |
+| Theology, commentary, devotional, doctrinal works | `references/theology-mode.md` |
 
 ---
 
@@ -347,6 +365,9 @@ When exporting to Obsidian, adapt the following based on user's request language
 |:---|:---|:---|:---|
 | Report Filename | `{Title} - 深度阅读报告.md` | `{Title} - Deep Reading Report.md` | Adapted to language |
 | Fiction Report | `{Title} - 小说阅读报告.md` | `{Title} - Fiction Reading Report.md` | Adapted to language |
+| Theological Report | `{Title} - 神学阅读报告.md` | `{Title} - Theological Reading Report.md` | Adapted to language |
+| Synthesis Report | `{主题} - 主题阅读综合报告.md` | `{Topic} - Syntopical Synthesis Report.md` | Adapted to language |
+| Inspectional Card | `{Title} - 试读评估.md` (optional export; conversation-first) | `{Title} - Read Triage.md` (optional export) | Adapted to language |
 | Technical Report | `{Title} - 技术阅读报告.md` | `{Title} - Technical Reading Report.md` | Adapted to language |
 | Index File | `📚 阅读报告索引.md` | `📚 Reading Reports Index.md` | Use English or adapt |
 | Author Folder | `Authors/` | `Authors/` | `Authors/` (universal) |
@@ -523,6 +544,9 @@ Use this skill when:
 - User asks for "deep reading" or "critical analysis" of a book
 - User wants to extract mental models or frameworks from a book
 - **User wants to analyze a novel, novella, or short story collection (fiction mode: narrative analysis with full-spoiler plot discussion)**
+- **User asks "should I read this?" / wants a pre-read verdict before committing time (inspectional mode)**
+- **User provides 2+ books on one topic and wants consensus, disagreements, and reading order (syntopical mode)**
+- **User analyzes commentaries, theological or devotional works (theology mode: exegesis/application separation, cross-tradition neutrality)**
 - User requests evaluation of a book's arguments or credibility
 - User needs a structured reading report with actionable insights
 - **User wants to analyze technical materials (slides, papers, lecture notes)**
@@ -577,6 +601,45 @@ Fiction triggers switch to Mode 3 and load `references/fiction-mode.md`.
 | 🇯🇵 日本語 | `小説を分析 [書名]` | "小説を分析『それから』" | Fiction |
 
 Note: plain `分析 [书名]` stays General mode unless the book is identified as fiction (see Automatic Mode Detection).
+
+### Inspectional Mode (Read Triage — "Should I Read This?")
+
+Works for any text type. Loads `references/inspectional-mode.md`.
+
+| Language | Trigger | Example | Mode |
+|:---|:---|:---|:---:|
+| 🇨🇳 中文 | `值得读吗《书名》` | "《思考，快与慢》值得读吗" | Inspectional |
+| 🇨🇳 中文 | `要不要读 [书名]` | "要不要读这本书" | Inspectional |
+| 🇨🇳 中文 | `试读 [书名]` | "试读《原则》" | Inspectional |
+| 🇬🇧 English | `should I read [book]` | "should I read Thinking, Fast and Slow" | Inspectional |
+| 🇬🇧 English | `is [book] worth reading` | "is it worth my time" | Inspectional |
+| 🇯🇵 日本語 | `読む価値 [書名]` | "この本、読む価値ある？" | Inspectional |
+
+### Syntopical Mode (Topic Synthesis)
+
+Requires a topic plus 2+ books. Loads `references/syntopical-mode.md`.
+
+| Language | Trigger | Example | Mode |
+|:---|:---|:---|:---:|
+| 🇨🇳 中文 | `主题阅读 [主题]` | "主题阅读：决策科学这5本" | Syntopical |
+| 🇨🇳 中文 | `梳理 [主题]` | "帮我梳理育儿与家庭神学" | Syntopical |
+| 🇨🇳 中文 | `对比分析 [A] 和 [B]` | "对比分析《思考快与慢》和《噪声》" | Syntopical |
+| 🇬🇧 English | `syntopical reading [topic]` | "syntopical reading on decision-making" | Syntopical |
+| 🇬🇧 English | `compare [A] and [B]` | "compare these two books" | Syntopical |
+| 🌐 Universal | 一次提供 2+ 本书 + 主题词 | "这几本关于XX的书综合一下" | Syntopical |
+
+### Theology Mode (Theological & Devotional Works)
+
+Loads `references/theology-mode.md`.
+
+| Language | Trigger | Example | Mode |
+|:---|:---|:---|:---:|
+| 🇨🇳 中文 | `神学阅读《书名》` | "神学阅读《基督教要义》" | Theology |
+| 🇨🇳 中文 | `分析注释书 [书卷]` | "分析注释书《罗马书注释》" | Theology |
+| 🇨🇳 中文 | `灵修阅读 [书名]` | "灵修阅读《竭诚为主》" | Theology |
+| 🇬🇧 English | `theological reading [title]` | "theological reading Institutes" | Theology |
+| 🇬🇧 English | `analyze commentary [book]` | "analyze commentary on Romans" | Theology |
+| 🇬🇧 English | `devotional reading [title]` | "devotional reading My Utmost" | Theology |
 
 ### Technical Reading Mode (Papers, Talks, Slides)
 
@@ -681,12 +744,24 @@ The skill automatically detects mode based on:
 - Filename contains year (2009, 2010, etc.) → Technical  
 - Keywords: "论文", "演讲", "slides", "talk", "paper", "analysis" → Technical
 - Keywords: "小说", "长篇", "中篇", "短篇", "故事集", "文学" / "novel", "fiction", "novella", "short story" / "小説", "フィクション" → **Fiction** (then load `references/fiction-mode.md`)
+- Triage verbs: "值得读吗", "要不要读", "试读", "这书怎么样", "帮我看看" / "should I read", "worth reading", "worth my time" / "読む価値" → **Inspectional** (then load `references/inspectional-mode.md`)
+- 2+ books in one request + 主题/综合/对比/梳理 / "compare", "synthesis", "reading list" → **Syntopical** (then load `references/syntopical-mode.md`)
+- Theology domain: "神学", "圣经", "注释书", "查经", "灵修", "教义", "教会历史" / "theology", "commentary", "devotional", "exegesis", "doctrine" / "神學", "注解" → **Theology** (then load `references/theology-mode.md`)
 - **arXiv URL pattern** (`arxiv.org/abs/`, `arxiv.org/pdf/`) → **arXiv Paper**
 - **URL pattern** (`http://`, `https://`) → **Web Content** (any valid URL)
 - **File extension `.epub`, `.azw3`, `.mobi` → **Ebook** (if ebook metadata/filename indicates a novel or story collection → Fiction mode)
 - Keywords: "链接", "文章", "网页", "微信", "link", "article", "URL" → Web Content
 - Keywords: "arXiv", "arxiv" → **arXiv Paper**
 - Otherwise → General
+
+**Priority when signals conflict** (apply in this order):
+1. **Inspectional** — triage intent overrides everything (even fiction: "《三体》值得读吗" is Inspectional, not Fiction)
+2. **Syntopical** — multi-book + topic intent overrides single-book type modes
+3. **Theology** — domain signal overrides General; Fiction/Technical type signals still win if explicit (e.g., a novel about pastors is Fiction; a commentary on a novel is General)
+4. **Fiction / Technical** — text-type signals
+5. **General** — default
+
+When genuinely ambiguous (e.g., narrative non-fiction like 《冷血》, or a Christian-living book vs. theology), ask the user which mode to use rather than guessing.
 
 **Fiction detection rules**: Novels and story collections usually enter via ebook mode or explicit triggers. When in doubt (e.g., narrative non-fiction such as 《冷血》), ask the user whether to use Fiction or General mode. When fiction is confirmed, **read `references/fiction-mode.md`** for templates and workflow before generating the report.
 
